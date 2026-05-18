@@ -1,6 +1,6 @@
 print('=' * 20, 'Fazenda Sertão', '=' * 20)
 
-usuarios = [["gg", "gg", "ADM"], ['ff', 'ff', 'CLI']]
+usuarios = []
 animais = []
 
 compras = []
