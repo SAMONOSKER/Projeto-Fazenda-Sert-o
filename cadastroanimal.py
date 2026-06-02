@@ -105,7 +105,7 @@ def vicinabov():
         animais.append({
             'Tipo': 'Bovino',
             'Brinco': brinco,
-            'Status': 'Vacinação'
+            'Status': 'Vacinação',
         })
 
     for animal in animais:
