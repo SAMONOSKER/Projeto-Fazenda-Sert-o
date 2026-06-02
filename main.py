@@ -2,7 +2,7 @@ from cadastrosUsuarios import adm
 from cadastrosUsuarios import cli
 from  login import login
 
-from cadastrosUsuarios import usuarios
+
 
 
 
