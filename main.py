@@ -8,6 +8,11 @@ from  login import loginn
 
 print('=' * 20, 'Fazenda Sertão', '=' * 20)
 
+<<<<<<< HEAD
+=======
+usuarios = []
+animais = []
+>>>>>>> 5a000459821204c8be7464c6addf37c6dbc4bbed
 
 
 while True:
