@@ -1,6 +1,6 @@
-from cadastrosUsuarios import adm
-from cadastrosUsuarios import cli
-from  login import login
+from cadastrosUsuarios import adm, cli
+from menu import menucadastro
+from  login import loginn
 
 
 
@@ -24,11 +24,7 @@ while True:
 
     elif op == "1":
         while True:
-            print()
-            print('=' * 10, 'CADASTRO GERAL', '=' * 10)
-            print("1- Cadastar ADM")
-            print("2- Cadastar CLIENTE")
-            print("0- Voltar")
+            menucadastro()
             escolha = input("Digite a opção: ")
 
             if escolha == '1':
@@ -43,7 +39,7 @@ while True:
                 print('Opção inválida!')
 
     elif op == "2":
-        login()
+        loginn()
 
     #                     elif escolha == '2':
     #                         print()

@@ -1,32 +1,219 @@
 import random
 
-from main import escolha
+from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino
+
+
 
 animais = []
+
+# Cadastros
+
+def bovi():
+    while True:
+        statusbov()
+        escolha = input('\nInforme sua opção: ')
+        if escolha == '1':
+            lactabov()
+
+        elif escolha == '2':
+            engordabov()
+
+        elif escolha == '3':
+            vendabov()
+
+        elif escolha == '4':
+            tratamentobov()
+
+        elif escolha == '5':
+            vicinabov()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('\nOpção inválida! Tente novamente.')
+
+def capri():
+    while True:
+        statuscapri()
+        escolha = input('\nInforme sua opção: ')
+
+        if escolha == '1':
+            engordacapri()
+
+        elif escolha == '2':
+            vendacapri()
+
+        elif escolha == '3':
+            tratamentocapri()
+
+        elif escolha == '4':
+            vacinacapri()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('\nOpção inválida! Tente novamente.')
+
+def ovino():
+    while True:
+        estatusovi()
+        escolha = input('Informe sua opção: ')
+        if escolha == '1':
+            tosquiaovi()
+
+        elif escolha == '2':
+            vendaovi()
+
+        elif escolha == '3':
+            engordaovi()
+
+        elif escolha == '4':
+            tratamentoovi()
+
+        elif escolha == '5':
+            vacinarovi()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+def suino():
+    while True:
+        estatussuino()
+        escolha = input('Informe sua opção: ')
+
+        if escolha == '1':
+            engordasui()
+
+        elif escolha == '2':
+            tratamentosui()
+
+        elif escolha == '3':
+            vacinarsui()
+
+        elif escolha == '4':
+            vendasui()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+def cavalo():
+    while True:
+        statusequino()
+        escolha = input('Informe sua opção: ')
+        if escolha == '1':
+            engordacavalo()
+
+        elif escolha == '2':
+            treinamentocavalo()
+
+        elif escolha == '3':
+            tratamentocavalo()
+
+        elif escolha == '4':
+            vacinarcavalo()
+
+        elif escolha == '5':
+            vendacavalo()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+def mula():
+      while True:
+          statusequino()
+          escolha = input('Informe sua opção: ')
+          if escolha == '1':
+              engordamula()
+
+          elif escolha == '2':
+              treinamentomula()
+
+          elif escolha == '3':
+              tratamentomula()
+
+          elif escolha == '4':
+              vacinarmula()
+
+          elif escolha == '5':
+              vendamula()
+
+          elif escolha == '0':
+              break
+
+          else:
+              print('Opção inválida!')
+
+def jumento():
+    while True:
+        statusequino()
+        escolha = input('Informe sua opção: ')
+        if escolha == '1':
+            engordajumento()
+
+        elif escolha == '2':
+            treinamentojumento()
+
+        elif escolha == '3':
+            tratamentojumento()
+
+        elif escolha == '4':
+            vacinarjumento()
+
+        elif escolha == '5':
+            vendajumento()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+def equinno():
+    while True:
+        equino()
+        escolha = input('Informe sua opção: ')
+
+        if escolha == '1':
+            cavalo()
+
+        elif escolha == '2':
+            mula()
+
+        elif escolha == '3':
+            jumento()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+
+
+
+
 
 
 def linha():
     print('=' * 30)
 
-def menucadas():
-    print()
-    print('=' * 10, 'Cadastrar animal', '=' * 10)
-    print('[1] - Bovino')
-    print('[2] - Caprino')
-    print('[3] - Ovino')
-    print('[4] - Suíno/Leitão')
-    print('[5] - Equinocultura')
+
 
 
 #Bovino
 
-def statusbov():
-    print('[1] - Lactação')
-    print('[2] - Engorda')
-    print('[3] - Venda')
-    print('[4] - Tratamento')
-    print('[5] - Vacinação')
-    print('[0] - Sair')
+
 
 def lactabov():
     linha()
@@ -80,15 +267,17 @@ def vendabov():
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
                 peso = random.randint(450, 600)
+                precokg = 23
+                preco = peso * precokg
                 animais.append({
-                    'Tipo': 'Bovino',
+                    'Tipo': 'Bovino/Boi',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
 
-            for animal in animais:
-                print(f'Tipo: {animal['Tipo']} | Peso: {animal['peso']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+            print('Cadastro Concluido!')
 
 
         elif escolha == '2':
@@ -97,16 +286,17 @@ def vendabov():
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
                 peso = random.randint(400, 500)
-
+                precokg = 23
+                preco = peso * precokg
                 animais.append({
-                    'Tipo': 'Bovino',
+                    'Tipo': 'Bovino/Vaca',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
 
-            for animal in animais:
-                print(f'Tipo: {animal['Tipo']} | Peso: {animal['peso']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+            print('Cadastro Concluido!')
 
 
         elif escolha == '0':
@@ -129,8 +319,7 @@ def tratamentobov():
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+    print('Cadastro Cocluido!')
 
 def vicinabov():
     linha()
@@ -146,18 +335,11 @@ def vicinabov():
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 #Caprino
 
-def statuscapri():
-    print('\n[1] - Engorda')
-    print('[2] - Venda')
-    print('[3] - Tratamento')
-    print('[4] - Vacinação')
-    print('[0] - Sair')
+
 
 def engordacapri():
     linha()
@@ -172,8 +354,7 @@ def engordacapri():
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+    print('Cadastro Concluido!')
 
 def vendacapri():
     linha()
@@ -183,14 +364,18 @@ def vendacapri():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(20, 50)
+        precokg = 15
+        preco = peso * precokg
         animais.append({
             'Tipo': 'Caprino',
+            'Peso': peso,
             'Brinco': brinco,
-            'Status': 'Venda'
+            'Status': 'Venda',
+            'Preço': preco
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+    print('Cadastro Concluido!')
 
 def tratamentocapri():
     linha()
@@ -206,8 +391,7 @@ def tratamentocapri():
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+    print('Cadastro Concluido!')
 
 def vacinacapri():
     linha()
@@ -223,20 +407,12 @@ def vacinacapri():
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro concluido!')
 
 # Ovino
 
 
-def estatusovi():
-    print('\n[1] - Tosquia')
-    print('[2] - Venda')
-    print('[3] - Engorda')
-    print('[4] - Tratamento')
-    print('[5] - Vacinação')
-    print('[0] - Sair')
+
 
 
 def tosquiaovi():
@@ -244,7 +420,7 @@ def tosquiaovi():
     print('          ', 'Tosquia')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -254,29 +430,27 @@ def tosquiaovi():
             'Status': 'Tosquia'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vendaovi():
     linha()
     print('          ', 'Engorda')
     linha()
-
-    quantidade = input('Informe a quantidade de cabeças: ')
-
+    quantidade = int(input('Informe a quantidade de cabeças: '))
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
-        peso = random.randint(30, 50)
+        peso = random.randint(30, 100)
+        precokg = 27
+        preco = peso * precokg
         animais.append({
             'Tipo': 'Ovino',
             'Peso': peso,
             'Brinco': brinco,
-            'Status': 'Venda'
+            'Status': 'Venda',
+            'Preço': preco
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Peso: {animal['Peso']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+    print('Cadastro Concluido!')
 
 
 def engordaovi():
@@ -284,7 +458,7 @@ def engordaovi():
     print('          ', 'Engorda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -294,16 +468,14 @@ def engordaovi():
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def tratamentoovi():
     linha()
     print('          ', 'Tratamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -313,16 +485,14 @@ def tratamentoovi():
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vacinarovi():
     linha()
     print('          ', 'Vacinação')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -332,20 +502,12 @@ def vacinarovi():
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 
 # Suíno/Leitão
 
 
-def estatussuino():
-    print('\n[1] - Engorda')
-    print('[2] - Tratamento')
-    print('[3] - Vacinação')
-    print('[4] - Venda')
-    print('[0] - Sair')
 
 
 def engordasui():
@@ -353,7 +515,7 @@ def engordasui():
     print('          ', 'Engorda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -363,16 +525,14 @@ def engordasui():
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def tratamentosui():
     linha()
     print('          ', 'Tratamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -382,16 +542,14 @@ def tratamentosui():
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vacinarsui():
     linha()
     print('          ', 'Vacinação')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -401,50 +559,33 @@ def vacinarsui():
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vendasui():
     linha()
     print('          ', 'Venda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
         peso = random.randint(90, 150)
+        precokg = 7
+        preco = peso * precokg
         animais.append({
             'Tipo': 'Suíno/Leitão',
             'Peso': peso,
             'Brinco': brinco,
-            'Status': 'Venda'
+            'Status': 'Venda',
+            'Preço': preco
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 
 # Equinocultura
 
-
-def equino():
-    while True:
-        print('\n[1] - Cavalo')
-        print('[2] - Mula')
-        print('[3] - Jumentos')
-        print('[0] - Sair')
-
-
-def statusequino():
-    print('\n[1] - Engorda')
-    print('[2] - Treinamento')
-    print('[3] - Tratamento')
-    print('[4] - Vacinação')
-    print('[5] - Venda')
-    print('[0] - Sair')
 
 
 
@@ -455,7 +596,7 @@ def engordacavalo():
     print('          ', 'Engorda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -465,16 +606,14 @@ def engordacavalo():
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def treinamentocavalo():
     linha()
     print('          ', 'Treinamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -484,16 +623,14 @@ def treinamentocavalo():
             'Status': 'Treinamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def tratamentocavalo():
     linha()
     print('          ', 'Tratamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -503,16 +640,14 @@ def tratamentocavalo():
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vacinarcavalo():
     linha()
     print('          ', 'Vacinação')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -522,9 +657,7 @@ def vacinarcavalo():
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
-
+    print('Cadastro Concluido!')
 
 def vendacavalo():
     linha()
@@ -538,31 +671,39 @@ def vendacavalo():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
                 peso = random.randint(400, 500)
+                preco = random.randint(5000, 20000)
                 animais.append({
                     'Tipo': 'Equino/Cavalo',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
+
+            print('Cadastro Concluido!')
 
         elif escolha == '2':
 
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(300, 350)
+                peso = random.randint(250, 450)
+                preco = random.randint(2000, 8000)
                 animais.append({
                     'Tipo': 'Equino/Cavalo/Potro',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
+
+            print('Cadastro Concluido!')
 
         elif escolha == '0':
             break
@@ -579,7 +720,7 @@ def engordamula():
     print('          ', 'Engorda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -598,7 +739,7 @@ def treinamentomula():
     print('          ', 'Treinamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -617,7 +758,7 @@ def tratamentomula():
     print('          ', 'Tratamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -636,7 +777,7 @@ def vacinarmula():
     print('          ', 'Vacinação')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -662,30 +803,34 @@ def vendamula():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(400, 500)
+                peso = random.randint(350, 550)
+                preco = random.randint(5000, 15000)
                 animais.append({
                     'Tipo': 'Equino/Mula',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preco': preco
                 })
 
         elif escolha == '2':
 
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(300, 350)
+                peso = random.randint(200, 350)
+                preco = random.randint(2000, 8000)
                 animais.append({
                     'Tipo': 'Equino/Mula/Potro',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
 
         elif escolha == '0':
@@ -703,7 +848,7 @@ def engordajumento():
     print('          ', 'Engorda')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -722,7 +867,7 @@ def treinamentojumento():
     print('          ', 'Treinamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -741,7 +886,7 @@ def tratamentojumento():
     print('          ', 'Tratamento')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -760,7 +905,7 @@ def vacinarjumento():
     print('          ', 'Vacinação')
     linha()
 
-    quantidade = input('Informe a quantidade de cabeças: ')
+    quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
@@ -786,30 +931,34 @@ def vendajumento():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(400, 500)
+                peso = random.randint(180, 350)
+                preco = random.randint(3000, 10000)
                 animais.append({
                     'Tipo': 'Equino/Jumento',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
 
         elif escolha == '2':
 
-            quantidade = input('Informe a quantidade de cabeças: ')
+            quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(300, 350)
+                peso = random.randint(30, 100)
+                preco = random.randint(500, 2000)
                 animais.append({
                     'Tipo': 'Equino/Jumento/Potro',
                     'Peso': peso,
                     'Brinco': brinco,
-                    'Status': 'Venda'
+                    'Status': 'Venda',
+                    'Preço': preco
                 })
 
         elif escolha == '0':
@@ -818,3 +967,71 @@ def vendajumento():
         else:
             print('Opção inválida!')
 
+
+# Lista de animais
+
+
+def lista():
+    while True:
+        linha()
+        print('          ', 'Informe o Tipo')
+        linha()
+
+        print('\n[1] - Todos')
+        print('[2] - Buscar o Tipo')
+        print('[0] - Sair')
+
+        escolha = input('Informe sua opção: ')
+
+        if escolha == '1':
+            for animal in animais:
+                print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+        elif escolha == '2':
+            while True:
+                print('\n[1] - Lactação')
+                print('[2] - Engorda')
+                print('[3] - Venda')
+                print('[4] - Tratamento')
+                print('[5] - Vacinação')
+                print('[0] - Sair')
+
+                escolha = input('Informe sua opção: ')
+
+                if escolha == '1':
+                    for animal in animais:
+                        if animal['Status'] == 'Lactação':
+                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+                elif escolha == '2':
+                    for animal in animais:
+                        if animal['Status'] == 'Engorda':
+                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+                elif escolha == '3':
+                    for animal in animais:
+                        if animal['Status'] == 'Venda':
+                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+                elif escolha == '4':
+                    for animal in animais:
+                        if animal['Status'] == 'Tratamento':
+                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+                elif escolha == '5':
+                    for animal in animais:
+                        if animal['Status'] == 'Vacinação':
+                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+
+                elif escolha == '0':
+                    break
+
+                else:
+                    print('Opção inválida!')
+
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
