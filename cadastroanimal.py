@@ -204,7 +204,7 @@ def equinno():
 
 
 
-
+#
 def linha():
     print('=' * 30)
 
