@@ -1,0 +1,5 @@
+comprados = []
+animais = []
+usuarios = []
+relatorio = []
+compras = []

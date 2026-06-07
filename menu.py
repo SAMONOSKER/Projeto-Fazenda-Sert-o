@@ -7,24 +7,27 @@ def menucadastro():
 
 
 def menugerenciamento():
-    print('=' * 10, 'Menu de Gerenciamento', '=' * 10)
-    print('[1] - Gerenciamento do Rebanho')
-    print('[2] - Gerenciamento de Produção e Derivados')
-    print('[3] - Gerenciamento do AGRO')
-    print('[0] - Sair')
+        print('=' * 10, 'Menu de Gerenciamento', '=' * 10)
+        print('[1] - Gerenciamento do Rebanho')
+        print('[2] - Gerenciamento de Produção e Derivados')
+        print('[3] - Gerenciamento do AGRO')
+        print('[4] - Relatorio Geral')
+        print('[0] - Sair')
 
 
 def menurebanho():
+
     print()
     print('=' * 10, 'Gerenciamento do Rebanho', '=' * 10)
     print('[1] - Cadastrar Animal')
-    print('[2] - Listarv Animais')
+    print('[2] - Listar Animais')
     print('[3] - Atualizar Animal')
     print('[4] - Remover Animal')
     print('[0] - Sair')
 
 
 def menucadas():
+
     print()
     print('=' * 10, 'Cadastrar animal', '=' * 10)
     print('[1] - Bovino')

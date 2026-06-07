@@ -1,10 +1,10 @@
 import random
 
 from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino
+from listas import animais
 
 
 
-animais = []
 
 # Cadastros
 

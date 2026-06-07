@@ -1,4 +1,4 @@
-usuarios = []
+from listas import usuarios
 
 def adm():
     while True:
