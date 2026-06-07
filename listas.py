@@ -1,4 +1,5 @@
 comprados = []
+produtos = []
 animais = []
 usuarios = []
 relatorio = []

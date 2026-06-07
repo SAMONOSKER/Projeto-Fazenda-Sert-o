@@ -1,8 +1,40 @@
 import random
+from tabulate import tabulate
+from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino, menucadas, menutipo
+from listas import animais, relatorio
+from datetime import datetime
 
-from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino
-from listas import animais
+def relatoriogeral():
+    if not relatorio:
+        print('Nenhuma movimentação registrada.')
+        return
 
+    dados = []
+
+    for item in relatorio:
+        dados.append([
+            item.get('Data', 'N/A'),
+            item.get('Hora', 'N/A'),
+            item.get('Ação', 'N/A'),
+            item.get('Brinco', 'N/A'),
+            item.get('Tipo', 'N/A'),
+            item.get('Status', 'N/A'),
+            item.get('Descrição', 'N/A')
+        ])
+
+    print(tabulate(
+        dados,
+        headers=[
+            'Data',
+            'Hora',
+            'Ação',
+            'Brinco',
+            'Tipo',
+            'Status',
+            'Descrição'
+        ],
+        tablefmt='fancy_grid'
+    ))
 
 
 
@@ -223,14 +255,27 @@ def lactabov():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(400, 450)
         animais.append({
             'Tipo': 'Bovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Lactação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Bovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Lactação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def engordabov():
     linha()
@@ -240,14 +285,26 @@ def engordabov():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(360, 420)
         animais.append({
             'Tipo': 'Bovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Bovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vendabov():
     while True:
@@ -262,11 +319,14 @@ def vendabov():
 
         if escolha == '1':
 
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(450, 600)
+                peso = random.randint(400, 450)
                 precokg = 23
                 preco = peso * precokg
                 animais.append({
@@ -277,15 +337,31 @@ def vendabov():
                     'Preço': preco
                 })
 
-            print('Cadastro Concluido!')
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Bovino',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
 
         elif escolha == '2':
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
                 brinco = random.randint(10000, 99999)
-                peso = random.randint(400, 500)
+                peso = random.randint(400, 450)
                 precokg = 23
                 preco = peso * precokg
                 animais.append({
@@ -296,7 +372,20 @@ def vendabov():
                     'Preço': preco
                 })
 
-            print('Cadastro Concluido!')
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Bovino/Vaca',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
 
         elif escolha == '0':
@@ -313,13 +402,27 @@ def tratamentobov():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(400, 450)
         animais.append({
             'Tipo': 'Bovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    print('Cadastro Cocluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Bovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vicinabov():
     linha()
@@ -329,13 +432,27 @@ def vicinabov():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(400, 450)
         animais.append({
             'Tipo': 'Bovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Bovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 #Caprino
 
@@ -344,17 +461,32 @@ def vicinabov():
 def engordacapri():
     linha()
     print('          ', 'Engorda')
+    linha()
     quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(15, 20)
         animais.append({
             'Tipo': 'Caprino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Caprino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vendacapri():
     linha()
@@ -368,14 +500,27 @@ def vendacapri():
         precokg = 15
         preco = peso * precokg
         animais.append({
-            'Tipo': 'Caprino',
+            'Tipo': 'Bovino/Boi',
             'Peso': peso,
             'Brinco': brinco,
             'Status': 'Venda',
             'Preço': preco
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Caprino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Venda',
+            'Preço': preco,
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def tratamentocapri():
     linha()
@@ -385,13 +530,27 @@ def tratamentocapri():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(15, 20)
         animais.append({
             'Tipo': 'Caprino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Caprino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vacinacapri():
     linha()
@@ -401,13 +560,27 @@ def vacinacapri():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(15, 20)
         animais.append({
             'Tipo': 'Caprino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    print('Cadastro concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Caprino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 # Ovino
 
@@ -424,19 +597,34 @@ def tosquiaovi():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(40, 113)
         animais.append({
             'Tipo': 'Ovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tosquia'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Ovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tosquia',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vendaovi():
     linha()
-    print('          ', 'Engorda')
+    print('          ', 'Venda')
     linha()
     quantidade = int(input('Informe a quantidade de cabeças: '))
+
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
         peso = random.randint(30, 100)
@@ -450,7 +638,20 @@ def vendaovi():
             'Preço': preco
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Ovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Venda',
+            'Preço': preco,
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def engordaovi():
@@ -462,13 +663,27 @@ def engordaovi():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(28, 40)
         animais.append({
             'Tipo': 'Ovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Ovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def tratamentoovi():
     linha()
@@ -479,13 +694,27 @@ def tratamentoovi():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(28, 40)
         animais.append({
             'Tipo': 'Ovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Ovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vacinarovi():
     linha()
@@ -496,13 +725,27 @@ def vacinarovi():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(40, 113)
         animais.append({
             'Tipo': 'Ovino',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Ovino',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 # Suíno/Leitão
@@ -519,13 +762,27 @@ def engordasui():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(100, 120)
         animais.append({
-            'Tipo': 'Suíno/Leitão',
+            'Tipo': 'Suíno',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Suíno',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def tratamentosui():
     linha()
@@ -536,13 +793,27 @@ def tratamentosui():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(40, 60)
         animais.append({
-            'Tipo': 'Suíno/Leitão',
+            'Tipo': 'Suíno',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Suíno',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vacinarsui():
     linha()
@@ -553,19 +824,32 @@ def vacinarsui():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(100, 120)
         animais.append({
-            'Tipo': 'Suíno/Leitão',
+            'Tipo': 'Suíno',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Suíno',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vendasui():
     linha()
     print('          ', 'Venda')
     linha()
-
     quantidade = int(input('Informe a quantidade de cabeças: '))
 
     for i in range(quantidade):
@@ -574,14 +858,27 @@ def vendasui():
         precokg = 7
         preco = peso * precokg
         animais.append({
-            'Tipo': 'Suíno/Leitão',
+            'Tipo': 'Suíno',
             'Peso': peso,
             'Brinco': brinco,
             'Status': 'Venda',
             'Preço': preco
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Suíno',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Venda',
+            'Preço': preco,
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 # Equinocultura
@@ -600,13 +897,27 @@ def engordacavalo():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(80, 100)
         animais.append({
             'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def treinamentocavalo():
     linha()
@@ -617,13 +928,27 @@ def treinamentocavalo():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(450, 550)
         animais.append({
             'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Treinamento'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Treinamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def tratamentocavalo():
     linha()
@@ -634,13 +959,27 @@ def tratamentocavalo():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(80, 100)
         animais.append({
             'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vacinarcavalo():
     linha()
@@ -651,13 +990,27 @@ def vacinarcavalo():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(150, 250)
         animais.append({
             'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    print('Cadastro Concluido!')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Cavalo',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 def vendacavalo():
     linha()
@@ -671,6 +1024,9 @@ def vendacavalo():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -678,17 +1034,33 @@ def vendacavalo():
                 peso = random.randint(400, 500)
                 preco = random.randint(5000, 20000)
                 animais.append({
-                    'Tipo': 'Equino/Cavalo',
+                    'Tipo': 'Equino/Cavalo/Adulto',
                     'Peso': peso,
                     'Brinco': brinco,
                     'Status': 'Venda',
                     'Preço': preco
                 })
 
-            print('Cadastro Concluido!')
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Cavalo/Adulto',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
         elif escolha == '2':
 
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -703,7 +1075,20 @@ def vendacavalo():
                     'Preço': preco
                 })
 
-            print('Cadastro Concluido!')
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Cavalo/Potro',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
         elif escolha == '0':
             break
@@ -724,14 +1109,27 @@ def engordamula():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(350, 450)
         animais.append({
-            'Tipo': 'Equino/mula',
+            'Tipo': 'Equino/Mula',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Mula',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def treinamentomula():
@@ -743,14 +1141,27 @@ def treinamentomula():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(300, 400)
         animais.append({
             'Tipo': 'Equino/Mula',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Treinamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Mula',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Treinamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def tratamentomula():
@@ -762,14 +1173,27 @@ def tratamentomula():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(180, 250)
         animais.append({
             'Tipo': 'Equino/Mula',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Mula',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def vacinarmula():
@@ -781,14 +1205,27 @@ def vacinarmula():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(350, 450)
         animais.append({
             'Tipo': 'Equino/Mula',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Mula',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def vendamula():
@@ -803,6 +1240,9 @@ def vendamula():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -810,15 +1250,33 @@ def vendamula():
                 peso = random.randint(350, 550)
                 preco = random.randint(5000, 15000)
                 animais.append({
-                    'Tipo': 'Equino/Mula',
+                    'Tipo': 'Equino/Mula/Adulto',
                     'Peso': peso,
                     'Brinco': brinco,
                     'Status': 'Venda',
-                    'Preco': preco
+                    'Preço': preco
                 })
+
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Mula/Adulto',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
         elif escolha == '2':
 
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -832,6 +1290,21 @@ def vendamula():
                     'Status': 'Venda',
                     'Preço': preco
                 })
+
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Mula/Potro',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
 
         elif escolha == '0':
             break
@@ -852,14 +1325,27 @@ def engordajumento():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(150, 250)
         animais.append({
             'Tipo': 'Equino/Jumento',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Engorda'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Jumento',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Engorda',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def treinamentojumento():
@@ -871,14 +1357,27 @@ def treinamentojumento():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(250, 450)
         animais.append({
             'Tipo': 'Equino/Jumento',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Treinamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Jumento',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Treinamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def tratamentojumento():
@@ -890,14 +1389,27 @@ def tratamentojumento():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(150, 250)
         animais.append({
             'Tipo': 'Equino/Jumento',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Tratamento'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Jumento',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Tratamento',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def vacinarjumento():
@@ -909,14 +1421,27 @@ def vacinarjumento():
 
     for i in range(quantidade):
         brinco = random.randint(10000, 99999)
+        peso = random.randint(250, 350)
         animais.append({
             'Tipo': 'Equino/Jumento',
+            'Peso': peso,
             'Brinco': brinco,
             'Status': 'Vacinação'
         })
 
-    for animal in animais:
-        print(f'Tipo: {animal['Tipo']} | Brinco: {animal['Brinco']} | Status: {animal['Status']}')
+        relatorio.append({
+            'Data': datetime.now().strftime('%d/%m/%Y'),
+            'Hora': datetime.now().strftime('%H:%M:%S'),
+            'Ação': 'Cadastro',
+            'Tipo': 'Equino/Jumento',
+            'Peso': peso,
+            'Brinco': brinco,
+            'Status': 'Vacinação',
+            'Descrição': 'Animal cadastrado no sistema.'
+
+        })
+
+    print('Cadastrado com sucesso!')
 
 
 def vendajumento():
@@ -931,6 +1456,9 @@ def vendajumento():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -938,15 +1466,33 @@ def vendajumento():
                 peso = random.randint(180, 350)
                 preco = random.randint(3000, 10000)
                 animais.append({
-                    'Tipo': 'Equino/Jumento',
+                    'Tipo': 'Equino/Jumento/Adulto',
                     'Peso': peso,
                     'Brinco': brinco,
                     'Status': 'Venda',
                     'Preço': preco
                 })
 
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Jumento/Adulto',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
+
         elif escolha == '2':
 
+            linha()
+            print('          ', 'Venda')
+            linha()
             quantidade = int(input('Informe a quantidade de cabeças: '))
 
             for i in range(quantidade):
@@ -961,6 +1507,21 @@ def vendajumento():
                     'Preço': preco
                 })
 
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Cadastro',
+                    'Tipo': 'Equino/Jumento/Potro',
+                    'Peso': peso,
+                    'Brinco': brinco,
+                    'Status': 'Venda',
+                    'Preço': preco,
+                    'Descrição': 'Animal cadastrado no sistema.'
+
+                })
+
+            print('Cadastrado com sucesso!')
+
         elif escolha == '0':
             break
 
@@ -974,7 +1535,7 @@ def vendajumento():
 def lista():
     while True:
         linha()
-        print('          ', 'Informe o Tipo')
+        print('          ','Informe o Tipo')
         linha()
 
         print('\n[1] - Todos')
@@ -984,8 +1545,10 @@ def lista():
         escolha = input('Informe sua opção: ')
 
         if escolha == '1':
+            info = []
             for animal in animais:
-                print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg', animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'), f'R$ {animal.get('Preço', 0):,.2f}'])
+            print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
         elif escolha == '2':
             while True:
@@ -999,29 +1562,39 @@ def lista():
                 escolha = input('Informe sua opção: ')
 
                 if escolha == '1':
+                    info = []
                     for animal in animais:
                         if animal['Status'] == 'Lactação':
-                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                            info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg',animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'),f'R$ {animal.get('Preço', 0):,.2f}'])
+                    print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
                 elif escolha == '2':
+                    info = []
                     for animal in animais:
                         if animal['Status'] == 'Engorda':
-                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                            info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg',animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'),f'R$ {animal.get('Preço', 0):,.2f}'])
+                    print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
                 elif escolha == '3':
+                    info = []
                     for animal in animais:
                         if animal['Status'] == 'Venda':
-                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                            info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg',animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'),f'R$ {animal.get('Preço', 0):,.2f}'])
+                    print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
                 elif escolha == '4':
+                    info = []
                     for animal in animais:
                         if animal['Status'] == 'Tratamento':
-                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                            info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg',animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'),f'R$ {animal.get('Preço', 0):,.2f}'])
+                    print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
                 elif escolha == '5':
+                    info = []
                     for animal in animais:
                         if animal['Status'] == 'Vacinação':
-                            print(f'Topo: {animal['Tipo']} || Peso: {animal['Peso']}kg || Brinco: {animal['Brinco']} || Status: {animal['Status']} || Preço: {animal['Preço']}')
+                            info.append([animal.get('Tipo', 'N/A'), f'{animal.get('Peso', 'Não informado')} kg',animal.get('Brinco', 'N/A'), animal.get('Status', 'N/A'),f'R$ {animal.get('Preço', 0):,.2f}'])
+                    print(tabulate(info, headers=['Tipo', 'Peso', 'Brinco', 'Status', 'Preço'], tablefmt='fancy_grid'))
 
                 elif escolha == '0':
                     break
@@ -1035,3 +1608,130 @@ def lista():
 
         else:
             print('Opção inválida!')
+
+
+
+
+def atualizaranimal():
+        linha()
+        print('          ','Atualizar Animal')
+        linha()
+
+        brinco = int(input('Informe o brinco do animal: '))
+
+        for animal in animais:
+
+            if animal['Brinco'] == brinco:
+
+                print('\n1 - Peso')
+                print('2 - Status')
+                print('3 - Preço')
+
+                opcao = input('O que deseja atualizar? ')
+
+                if opcao == '1':
+
+                    pesoantigo = animal.get('Peso', 'Não informado')
+
+                    novo = float(input('Novo peso: '))
+                    animal['Peso'] = novo
+
+                    relatorio.append({
+                        'Data': datetime.now().strftime('%d/%m/%Y'),
+                        'Hora': datetime.now().strftime('%H:%M:%S'),
+                        'Ação': 'Atualização',
+                        'Brinco': animal.get('Brinco', 'N/A'),
+                        'Tipo': animal.get('Tipo', 'N/A'),
+                        'Status': animal.get('Status', 'N/A'),
+                        'Descrição': f'Peso alterado de {pesoantigo} kg para {novo} kg'
+                    })
+
+                    print('Peso atualizado com sucesso!')
+
+                elif opcao == '2':
+
+                    statusantigo = animal['Status']
+
+                    novo = input('Novo status: ')
+                    animal['Status'] = novo
+
+                    relatorio.append({
+                        'Data': datetime.now().strftime('%d/%m/%Y'),
+                        'Hora': datetime.now().strftime('%H:%M:%S'),
+                        'Ação': 'Atualização',
+                        'Brinco': animal.get('Brinco', 'N/A'),
+                        'Tipo': animal.get('Tipo', 'N/A'),
+                        'Status': animal.get('Status', 'N/A'),
+                        'Descrição': f'Status alterado de {statusantigo} para {novo}'
+                    })
+
+                    print('Status atualizado com sucesso!')
+
+                elif opcao == '3':
+
+                    precoantigo = animal.get('Preço', 0)
+
+                    novo = float(input('Novo preço: '))
+                    animal['Preço'] = novo
+
+                    relatorio.append({
+                        'Data': datetime.now().strftime('%d/%m/%Y'),
+                        'Hora': datetime.now().strftime('%H:%M:%S'),
+                        'Ação': 'Atualização',
+                        'Brinco': animal.get('Brinco', 'N/A'),
+                        'Tipo': animal.get('Tipo', 'N/A'),
+                        'Status': animal.get('Status', 'N/A'),
+                        'Descrição': (f'Preço alterado de R$ {precoantigo:,.2f} para R$ {novo:,.2f}')
+                    })
+
+                    print('Preço atualizado com sucesso!')
+
+                return
+
+        print('Animal não encontrado!')
+
+
+def removeranimal():
+    linha()
+    print('       ','Remover Animal')
+    linha()
+
+    brinco = int(input('Digite o número do brinco: '))
+
+    for animal in animais:
+
+        if animal['Brinco'] == brinco:
+
+            print('\nAnimal encontrado:')
+            print(f"Brinco: {animal['Brinco']}")
+            print(f"Tipo: {animal['Tipo']}")
+            print(f"Status: {animal['Status']}")
+
+            print('\nTem certeza que deseja remover o animal?')
+            print('[1] - Sim')
+            print('[2] - Não')
+            escolha = input('Informe sua opção: ')
+
+            if escolha == '1':
+                animais.remove(animal)
+                relatorio.append({
+                    'Data': datetime.now().strftime('%d/%m/%Y'),
+                    'Hora': datetime.now().strftime('%H:%M:%S'),
+                    'Ação': 'Remoção',
+                    'Brinco': animal.get('Brinco', 'N/A'),
+                    'Tipo': animal.get('Tipo', 'N/A'),
+                    'Status': animal.get('Status', 'N/A'),
+                    'Descrição': 'Animal removido do sistema'
+                })
+                print('Animal removido com sucesso!')
+            elif escolha == '2':
+                print('Operação cancelada.')
+
+            return
+
+    print('Animal não encontrado!')
+
+
+
+
+

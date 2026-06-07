@@ -1,3 +1,8 @@
+def linha():
+    print('=' * 30)
+
+
+
 def menucadastro():
     print()
     print('=' * 10, 'CADASTRO GERAL', '=' * 10)
@@ -10,19 +15,28 @@ def menugerenciamento():
         print('=' * 10, 'Menu de Gerenciamento', '=' * 10)
         print('[1] - Gerenciamento do Rebanho')
         print('[2] - Gerenciamento de Produção e Derivados')
-        print('[3] - Gerenciamento do AGRO')
-        print('[4] - Relatorio Geral')
+        print('[3] - Relatório Geral')
         print('[0] - Sair')
 
-
 def menurebanho():
-
     print()
     print('=' * 10, 'Gerenciamento do Rebanho', '=' * 10)
     print('[1] - Cadastrar Animal')
     print('[2] - Listar Animais')
     print('[3] - Atualizar Animal')
     print('[4] - Remover Animal')
+    print('[0] - Sair')
+
+
+
+
+
+def menutipo():
+    print('[1] - Bovino')
+    print('[2] - Caprino')
+    print('[3] - Ovino')
+    print('[4] - Suíno/Leitão')
+    print('[5] - Equinocultura')
     print('[0] - Sair')
 
 
@@ -39,6 +53,9 @@ def menucadas():
 
 
 def statusbov():
+    linha()
+    print('       ','Status')
+    linha()
     print('[1] - Lactação')
     print('[2] - Engorda')
     print('[3] - Venda')
@@ -48,6 +65,8 @@ def statusbov():
 
 
 def statuscapri():
+    linha()
+    print('       ','Status')
     print('\n[1] - Engorda')
     print('[2] - Venda')
     print('[3] - Tratamento')
@@ -55,7 +74,8 @@ def statuscapri():
     print('[0] - Sair')
 
 def estatusovi():
-
+    linha()
+    print('       ','Status')
     print('\n[1] - Tosquia')
     print('[2] - Venda')
     print('[3] - Engorda')
@@ -64,6 +84,9 @@ def estatusovi():
     print('[0] - Sair')
 
 def estatussuino():
+        linha()
+        print('       ','Status')
+        linha()
         print('\n[1] - Engorda')
         print('[2] - Tratamento')
         print('[3] - Vacinação')
@@ -71,7 +94,6 @@ def estatussuino():
         print('[0] - Sair')
 
 def equino():
-    while True:
         print('\n[1] - Cavalo')
         print('[2] - Mula')
         print('[3] - Jumentos')
@@ -79,6 +101,8 @@ def equino():
 
 
 def statusequino():
+    linha()
+    print('       ','Status')
     print('\n[1] - Engorda')
     print('[2] - Treinamento')
     print('[3] - Tratamento')
