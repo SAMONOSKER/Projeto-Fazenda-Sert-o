@@ -8,7 +8,8 @@ import requests
 
 def clima():
 
-        api_key = "SUA_CHAVE"
+
+        api_key = "c6be9b9a9108463743a586277abc26d1"
 
         url = (
             f"https://api.openweathermap.org/data/2.5/weather"
@@ -20,6 +21,8 @@ def clima():
 
         try:
             resposta = requests.get(url, timeout=5)
+            resposta.raise_for_status()
+
             dados = resposta.json()
 
             descricao = dados["weather"][0]["description"]
@@ -27,8 +30,11 @@ def clima():
 
             return f"{descricao} {temperatura:.0f}°C"
 
-        except:
+        except Exception as erro:
+            print("Erro da API:", erro)
             return "clima indisponível"
+
+
 
 def mostrar_comprovante(cliente, quantidade, total, tipo, data, hora, animais_comprados, condicao_climatica):
 
@@ -68,48 +74,107 @@ def mostrar_comprovante(cliente, quantidade, total, tipo, data, hora, animais_co
 
 def compra_bovino():
 
-    print("\nLISTA DE ANIMAIS DISPONÍVEIS")
+    print("\nTIPO DE BOVINO")
+    print("1 - Boi")
+    print("2 - Vaca")
+    print("0 - Sair")
 
-    quantidade_disponivel = 0
+    opcao_tipo = input("Escolha: ")
+
+    if opcao_tipo == "0":
+        return
+
+    if opcao_tipo == "1":
+        tipo_escolhido = "Bovino/Boi"
+
+    elif opcao_tipo == "2":
+        tipo_escolhido = "Bovino/Vaca"
+
+    else:
+        print("Opção inválida.")
+        return
+
+    disponiveis = []
 
     for animal in animais:
-        if animal["Status"] == "Venda":
-            print(f"Brinco: {animal['Brinco']} | Tipo: {animal['Tipo']} | Preço: R$ {animal['Preço']:.2f}")
-            quantidade_disponivel += 1
 
-    if quantidade_disponivel == 0:
+        if animal["Status"] != "Venda":
+            continue
+
+        if animal["Tipo"] != tipo_escolhido:
+            continue
+
+        disponiveis.append(animal)
+
+    if len(disponiveis) == 0:
         print("Não há animais disponíveis.")
         return
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantidade: "))
+    print("\nLISTA DE ANIMAIS DISPONÍVEIS")
+
+    tabela = []
+
+    for animal in disponiveis:
+        tabela.append([
+            animal["Tipo"],
+            f"R$ {animal['Preço']:.2f}"
+        ])
+
+    print(
+        tabulate(
+            tabela,
+            headers=["Tipo", "Preço"],
+            tablefmt="fancy_grid"
+        )
+    )
+
+    quantidade_disponivel = len(disponiveis)
+
+    print(f"\nQuantidade disponível: {quantidade_disponivel}")
+
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantidade bovinos deseja comprar?: ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
         return
 
-    total = 0
-    vendidos = 0
     animais_comprados = []
-    indice = 0
+    total = 0
 
-    while vendidos < quantidade and indice < len(animais):
+    for animal in disponiveis[:quantidade]:
 
-        if animais[indice]["Status"] == "Venda":
-            animal = animais.pop(indice)
-            comprados.append(animal)
-            animais_comprados.append(animal)
+        animais.remove(animal)
 
-            total += animal["Preço"]
-            vendidos += 1
-        else:
-            indice += 1
+        comprados.append(animal)
+        animais_comprados.append(animal)
 
+        total += animal["Preço"]
 
     print("\n1 - Retirada")
     print("2 - Entrega")
 
     opcao = input("Escolha: ")
+
     condicao_climatica = clima()
 
     if opcao == "1":
@@ -119,12 +184,16 @@ def compra_bovino():
 
         clima_ruim = [
             "chuva",
+            "rain",
             "tempestade",
+            "storm",
             "garoa",
-            "trovoada"
+            "drizzle",
+            "trovoada",
+            "thunderstorm"
         ]
 
-        if condicao_climatica == "clima indisponível":
+        if condicao_climatica.lower() == "clima indisponível":
             tipo = "Entrega programada (sem dados climáticos)"
 
         elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
@@ -134,23 +203,25 @@ def compra_bovino():
             tipo = "Entrega programada"
 
     agora = datetime.now()
+
     data = agora.strftime("%d/%m/%Y")
     hora = agora.strftime("%H:%M")
 
     for animal in animais_comprados:
+
         relatorio.append({
             "Data": data,
             "Hora": hora,
+            "Ação": "Compra Bovino",
             "Cliente": cliente,
             "Brinco": animal["Brinco"],
             "Tipo": animal["Tipo"],
             "Preço": animal["Preço"],
             "Status": "Vendido",
             "Entrega": tipo,
-            "condiçoes climaticas": clima()
+            "Condição climática": condicao_climatica,
+            "Descrição": f"{animal['Tipo']} vendido para {cliente}"
         })
-
-    condicao_climatica = clima()
 
     mostrar_comprovante(
         cliente,
@@ -163,7 +234,7 @@ def compra_bovino():
         condicao_climatica
     )
 
-    return
+    print("\nCOMPRA FINALIZADA COM SUCESSO!")
 
 def compra_caprino():
 
@@ -184,8 +255,27 @@ def compra_caprino():
         print("Não há caprinos disponíveis.")
         return
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantos caprinos deseja comprar? "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantos caprinos deseja comprar? : ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
@@ -289,8 +379,27 @@ def compra_ovino():
         print("Não há ovelhas disponíveis.")
         return
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantas ovelhas deseja comprar? "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantos ovinos deseja comprar? : ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
@@ -394,8 +503,27 @@ def compra_suino():
         print("Não há suínos disponíveis.")
         return
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantos suínos deseja comprar? "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantidade: ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
@@ -499,8 +627,27 @@ def compra_leitao():
         print("Não há leitões disponíveis.")
         return
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantos leitões deseja comprar? "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantos leitoes deseja comprar? : ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
@@ -666,8 +813,27 @@ def compra_equino():
 
     print(f"\nQuantidade disponível: {quantidade_disponivel}")
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = int(input("Quantos deseja comprar? "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantos equinos deseja comprar? : ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > quantidade_disponivel:
         print("Quantidade indisponível.")
@@ -770,8 +936,27 @@ def compra_queijo():
 
     produto = queijos[escolha]
 
-    cliente = input("Cliente: ")
-    quantidade = int(input("Quantidade: "))
+    while True:
+
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantidade: ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
 
     if quantidade > produto["Quantidade"]:
         print("Sem estoque.")
@@ -882,9 +1067,27 @@ def compra_leite():
 
     leite = leites[opcao]
 
-    cliente = input("\nDigite seu nome: ")
-    quantidade = float(input("Quantidade desejada (litros): "))
+    while True:
 
+        cliente = input("\nDigite seu nome: ").strip()
+
+        if not cliente.replace(" ", "").isalpha():
+            print("Erro! Digite apenas letras.")
+            continue
+
+        quantidade = input("Quantidade: ")
+
+        if not quantidade.isdigit():
+            print("Erro! Digite apenas números.")
+            continue
+
+        quantidade = int(quantidade)
+
+        if quantidade <= 0:
+            print("A quantidade deve ser maior que zero.")
+            continue
+
+        break
     if quantidade > leite["Quantidade"]:
         print("Quantidade indisponível.")
         return
@@ -929,7 +1132,7 @@ def compra_leite():
         ["Condição climática", condicao_climatica],
         ["Data", data],
         ["Hora", hora]
-        
+
     ]
     print("\nCOMPROVANTE DE COMPRA\n")
 

@@ -3,7 +3,7 @@ from Lojadocliente import listar_animais
 
 def menu_principal():
     while True:
-        print("\n1 - Loja")
+        print("\n1 - LOJA FAZENDA SERTÃO")
         print("2 - Listar animais")
         print("0 - Sair")
 
