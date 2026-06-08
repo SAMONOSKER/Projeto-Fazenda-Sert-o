@@ -6,20 +6,24 @@ from datetime import datetime
 
 
 def relatoriogeral():
-    linha()
-    print('      ','Relatório Geral')
-    linha()
-    print('[1] - Relatório Completo')
-    print('[2] - Escolher Relatório')
-    print('[0] - Sair')
+    while True:
+        linha()
+        print('      ','Relatório Geral')
+        linha()
+        print('[1] - Relatório Completo')
+        print('[2] - Escolher Relatório')
+        print('[0] - Sair')
 
-    escolha = input('Informe sua opção: ')
+        escolha = input('Informe sua opção: ')
 
-    if escolha == '1':
-        relatoriocompleto()
+        if escolha == '1':
+            relatoriocompleto()
 
-    elif escolha == '2':
-        escolherrelatorio()
+        elif escolha == '2':
+            escolherrelatorio()
+
+        elif escolha == '0':
+            break
 
 
 def relatoriocompleto():
