@@ -5,31 +5,30 @@ from tabulate import tabulate
 from listas import produtos
 import requests
 
+
 def clima():
-    try:
-        url = "https://wttr.in/Cajazeiras?format=%C+%t"
-        resposta = requests.get(url, timeout=5)
-        condicao = resposta.text.strip().lower()
 
-        traducoes = {
-            "partly cloudy": "parcialmente nublado",
-            "cloudy": "nublado",
-            "clear": "céu limpo",
-            "sunny": "ensolarado",
-            "rain": "chuva",
-            "light rain": "chuva leve",
-            "heavy rain": "chuva forte"
-        }
+        api_key = "SUA_CHAVE"
 
-        for ingles, portugues in traducoes.items():
-            if ingles in condicao:
-                condicao = condicao.replace(ingles, portugues)
+        url = (
+            f"https://api.openweathermap.org/data/2.5/weather"
+            f"?q=Cajazeiras,BR"
+            f"&appid={api_key}"
+            f"&units=metric"
+            f"&lang=pt_br"
+        )
 
-        return condicao
+        try:
+            resposta = requests.get(url, timeout=5)
+            dados = resposta.json()
 
-    except:
-        return "clima indisponível"
+            descricao = dados["weather"][0]["description"]
+            temperatura = dados["main"]["temp"]
 
+            return f"{descricao} {temperatura:.0f}°C"
+
+        except:
+            return "clima indisponível"
 
 def mostrar_comprovante(cliente, quantidade, total, tipo, data, hora, animais_comprados, condicao_climatica):
 
@@ -68,188 +67,316 @@ def mostrar_comprovante(cliente, quantidade, total, tipo, data, hora, animais_co
 
 
 def compra_bovino():
-    while True:
 
-        print("\n" + "=" * 50)
-        print("1 - BOI")
-        print("2 - VACA")
-        print("0 - SAIR")
+    print("\nLISTA DE ANIMAIS DISPONÍVEIS")
 
-        escolha = input("Escolha uma opção: ")
+    quantidade_disponivel = 0
 
-        if escolha == "0":
-            break
+    for animal in animais:
+        if animal["Status"] == "Venda":
+            print(f"Brinco: {animal['Brinco']} | Tipo: {animal['Tipo']} | Preço: R$ {animal['Preço']:.2f}")
+            quantidade_disponivel += 1
 
-        if escolha not in ["1", "2"]:
-            print("Opção inválida.")
-            continue
+    if quantidade_disponivel == 0:
+        print("Não há animais disponíveis.")
+        return
 
-        print("\nLISTA DE ANIMAIS DISPONÍVEIS")
+    cliente = input("\nDigite seu nome: ")
+    quantidade = int(input("Quantidade: "))
 
-        quantidade_disponivel = 0
+    if quantidade > quantidade_disponivel:
+        print("Quantidade indisponível.")
+        return
 
-        for animal in animais:
-            if animal["Status"] == "Venda":
-                print(f"Brinco: {animal['Brinco']} | Tipo: {animal['Tipo']} | Preço: R$ {animal['Preço']:.2f}")
-                quantidade_disponivel += 1
+    total = 0
+    vendidos = 0
+    animais_comprados = []
+    indice = 0
 
-        print(f"\nQuantidade disponível: {quantidade_disponivel}")
+    while vendidos < quantidade and indice < len(animais):
 
-        if quantidade_disponivel == 0:
-            print("Não há animais disponíveis.")
-            continue
+        if animais[indice]["Status"] == "Venda":
+            animal = animais.pop(indice)
+            comprados.append(animal)
+            animais_comprados.append(animal)
 
-        cliente = input("\nDigite seu nome: ")
-        quantidade = int(input("Quantas cabeças deseja comprar? "))
-
-        if quantidade > quantidade_disponivel:
-            print("Quantidade indisponível.")
-            continue
-
-        total = 0
-        animais_comprados = []
-        vendidos = 0
-        indice = 0
-
-        while vendidos < quantidade and indice < len(animais):
-
-            if animais[indice]["Status"] == "Venda":
-                animal = animais.pop(indice)
-                comprados.append(animal)
-                animais_comprados.append(animal)
-
-                total += animal["Preço"]
-                vendidos += 1
-            else:
-                indice += 1
-
-        print("\n1 - Retirada")
-        print("2 - Entrega")
-
-        opcao = input("Escolha uma opção: ")
-
-        agora = datetime.now()
-        data = agora.strftime("%d/%m/%Y")
-        hora = agora.strftime("%H:%M")
-
-        condicao_climatica = clima()
-
-        if opcao == "1":
-            tipo = "Retirada na fazenda"
+            total += animal["Preço"]
+            vendidos += 1
         else:
-            if "rain" in condicao_climatica or "chuva" in condicao_climatica:
-                tipo = "Entrega atrasada por clima ruim"
-            else:
-                tipo = "Entrega programada"
+            indice += 1
 
-        for animal in animais_comprados:
-            relatorio.append({
-                "Data": data,
-                "Hora": hora,
-                "Ação": "Compra",
-                "Cliente": cliente,
-                "Brinco": animal["Brinco"],
-                "Tipo": animal["Tipo"],
-                "Preço": animal["Preço"],
-                "Status": "Vendido",
-                "Entrega": tipo,
-                "Condição climática": condicao_climatica,
-                "Descrição": f"Animal vendido para {cliente}"
-            })
 
-        mostrar_comprovante(cliente, quantidade, total, tipo, data, hora, animais_comprados, condicao_climatica)
+    print("\n1 - Retirada")
+    print("2 - Entrega")
 
-def compra_caprino():
+    opcao = input("Escolha: ")
+    condicao_climatica = clima()
 
-        print("\nLISTA DE CAPRINOS DISPONÍVEIS")
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
 
-        quantidade_disponivel = 0
+    else:
 
-        for animal in animais:
-            if animal["Status"] == "Venda":
-                print(
-                    f"Brinco: {animal['Brinco']} | "
-                    f"Tipo: {animal['Tipo']} | "
-                    f"Preço: R$ {animal['Preço']:.2f}"
-                )
-                quantidade_disponivel += 1
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
 
-        print(f"\nQuantidade disponível: {quantidade_disponivel}")
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
 
-        if quantidade_disponivel == 0:
-            print("Não há caprinos disponíveis.")
-            return
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
 
-        cliente = input("\nDigite seu nome: ")
-
-        quantidade = int(input("Quantos caprinos deseja comprar? "))
-
-        if quantidade > quantidade_disponivel:
-            print("Quantidade indisponível.")
-            return
-
-        total = 0
-        animais_comprados = []
-
-        vendidos = 0
-        indice = 0
-
-        while vendidos < quantidade and indice < len(animais):
-
-            if animais[indice]["Status"] == "Venda":
-
-                animal = animais.pop(indice)
-
-                comprados.append(animal)
-                animais_comprados.append(animal)
-
-                total += animal["Preço"]
-                vendidos += 1
-
-            else:
-                indice += 1
-
-        print("\n1 - Retirada")
-        print("2 - Entrega")
-
-        opcao = input("Escolha uma opção: ")
-
-        agora = datetime.now()
-
-        data = agora.strftime("%d/%m/%Y")
-        hora = agora.strftime("%H:%M")
-
-        if opcao == "1":
-            tipo = "Retirada na fazenda"
         else:
             tipo = "Entrega programada"
 
-        for animal in animais_comprados:
-            relatorio.append({
-                "Data": data,
-                "Hora": hora,
-                "Ação": "Compra",
-                "Cliente": cliente,
-                "Brinco": animal["Brinco"],
-                "Tipo": animal["Tipo"],
-                "Preço": animal["Preço"],
-                "Status": "Vendido",
-                "Entrega": tipo,
-                "Descrição": f"{animal['Tipo']} vendido para {cliente}"
-            })
+    agora = datetime.now()
+    data = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
 
-        mostrar_comprovante(
-            cliente,
-            quantidade,
-            total,
-            tipo,
-            data,
-            hora,
-            animais_comprados
-        )
+    for animal in animais_comprados:
+        relatorio.append({
+            "Data": data,
+            "Hora": hora,
+            "Cliente": cliente,
+            "Brinco": animal["Brinco"],
+            "Tipo": animal["Tipo"],
+            "Preço": animal["Preço"],
+            "Status": "Vendido",
+            "Entrega": tipo,
+            "condiçoes climaticas": clima()
+        })
 
+    condicao_climatica = clima()
+
+    mostrar_comprovante(
+        cliente,
+        quantidade,
+        total,
+        tipo,
+        data,
+        hora,
+        animais_comprados,
+        condicao_climatica
+    )
+
+    return
+
+def compra_caprino():
+
+    print("\nLISTA DE CAPRINOS DISPONÍVEIS")
+
+    quantidade_disponivel = 0
+
+    for animal in animais:
+        if animal["Status"] == "Venda":
+            print(
+                f"Brinco: {animal['Brinco']} | "
+                f"Tipo: {animal['Tipo']} | "
+                f"Preço: R$ {animal['Preço']:.2f}"
+            )
+            quantidade_disponivel += 1
+
+    if quantidade_disponivel == 0:
+        print("Não há caprinos disponíveis.")
+        return
+
+    cliente = input("\nDigite seu nome: ")
+    quantidade = int(input("Quantos caprinos deseja comprar? "))
+
+    if quantidade > quantidade_disponivel:
+        print("Quantidade indisponível.")
+        return
+
+    total = 0
+    animais_comprados = []
+    vendidos = 0
+    indice = 0
+
+    while vendidos < quantidade and indice < len(animais):
+
+        if animais[indice]["Status"] == "Venda":
+
+            animal = animais.pop(indice)
+            comprados.append(animal)
+            animais_comprados.append(animal)
+
+            total += animal["Preço"]
+            vendidos += 1
+
+        else:
+            indice += 1
+
+    print("\n1 - Retirada")
+    print("2 - Entrega")
+
+    opcao = input("Escolha uma opção: ")
+
+    agora = datetime.now()
+    data = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
+
+    condicao_climatica = clima()
+
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
+
+    else:
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
+
+    for animal in animais_comprados:
+        relatorio.append({
+            "Data": data,
+            "Hora": hora,
+            "Ação": "Compra Caprino",
+            "Cliente": cliente,
+            "Brinco": animal["Brinco"],
+            "Tipo": animal["Tipo"],
+            "Preço": animal["Preço"],
+            "Status": "Vendido",
+            "Entrega": tipo,
+            "Condição climática": condicao_climatica,
+            "Descrição": f"Caprino vendido para {cliente}"
+        })
+
+    mostrar_comprovante(
+        cliente,
+        quantidade,
+        total,
+        tipo,
+        data,
+        hora,
+        animais_comprados,
+        condicao_climatica
+    )
+
+    return
+
+def compra_ovino():
+
+    print("\nLISTA DE OVELHAS DISPONÍVEIS")
+
+    quantidade_disponivel = 0
+
+    for animal in animais:
+        if animal["Status"] == "Venda" and animal["Tipo"].lower() == "ovelha":
+            print(
+                f"Brinco: {animal['Brinco']} | "
+                f"Tipo: {animal['Tipo']} | "
+                f"Preço: R$ {animal['Preço']:.2f}"
+            )
+            quantidade_disponivel += 1
+
+    if quantidade_disponivel == 0:
+        print("Não há ovelhas disponíveis.")
+        return
+
+    cliente = input("\nDigite seu nome: ")
+    quantidade = int(input("Quantas ovelhas deseja comprar? "))
+
+    if quantidade > quantidade_disponivel:
+        print("Quantidade indisponível.")
+        return
+
+    total = 0
+    animais_comprados = []
+    vendidos = 0
+    indice = 0
+
+    while vendidos < quantidade and indice < len(animais):
+
+        if animais[indice]["Status"] == "Venda" and animais[indice]["Tipo"].lower() == "ovelha":
+
+            animal = animais.pop(indice)
+            comprados.append(animal)
+            animais_comprados.append(animal)
+
+            total += animal["Preço"]
+            vendidos += 1
+
+        else:
+            indice += 1
+
+    print("\n1 - Retirada")
+    print("2 - Entrega")
+
+    opcao = input("Escolha uma opção: ")
+
+    agora = datetime.now()
+    data = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
+
+    condicao_climatica = clima()
+
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
+
+    else:
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
+
+    for animal in animais_comprados:
+        relatorio.append({
+            "Data": data,
+            "Hora": hora,
+            "Ação": "Compra Ovino",
+            "Cliente": cliente,
+            "Brinco": animal["Brinco"],
+            "Tipo": animal["Tipo"],
+            "Preço": animal["Preço"],
+            "Status": "Vendido",
+            "Entrega": tipo,
+            "Condição climática": condicao_climatica,
+            "Descrição": f"Ovelha vendida para {cliente}"
+        })
+
+    mostrar_comprovante(
+        cliente,
+        quantidade,
+        total,
+        tipo,
+        data,
+        hora,
+        animais_comprados,
+        condicao_climatica
+    )
+
+    return
 
 def compra_suino():
+
     print("\nLISTA DE SUÍNOS DISPONÍVEIS")
 
     quantidade_disponivel = 0
@@ -263,14 +390,11 @@ def compra_suino():
             )
             quantidade_disponivel += 1
 
-    print(f"\nQuantidade disponível: {quantidade_disponivel}")
-
     if quantidade_disponivel == 0:
         print("Não há suínos disponíveis.")
         return
 
     cliente = input("\nDigite seu nome: ")
-
     quantidade = int(input("Quantos suínos deseja comprar? "))
 
     if quantidade > quantidade_disponivel:
@@ -279,7 +403,6 @@ def compra_suino():
 
     total = 0
     animais_comprados = []
-
     vendidos = 0
     indice = 0
 
@@ -288,7 +411,6 @@ def compra_suino():
         if animais[indice]["Status"] == "Venda":
 
             animal = animais.pop(indice)
-
             comprados.append(animal)
             animais_comprados.append(animal)
 
@@ -304,20 +426,37 @@ def compra_suino():
     opcao = input("Escolha uma opção: ")
 
     agora = datetime.now()
-
     data = agora.strftime("%d/%m/%Y")
     hora = agora.strftime("%H:%M")
 
+    condicao_climatica = clima()
+
     if opcao == "1":
         tipo = "Retirada na fazenda"
+
     else:
-        tipo = "Entrega programada"
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
 
     for animal in animais_comprados:
         relatorio.append({
             "Data": data,
             "Hora": hora,
-            "Ação": "Compra",
+            "Ação": "Compra Suíno",
             "Cliente": cliente,
             "Brinco": animal["Brinco"],
             "Tipo": animal["Tipo"],
@@ -334,11 +473,15 @@ def compra_suino():
         tipo,
         data,
         hora,
-        animais_comprados
+        animais_comprados,
+        condicao_climatica
     )
+
+    return
 
 
 def compra_leitao():
+
     print("\nLISTA DE LEITÕES DISPONÍVEIS")
 
     quantidade_disponivel = 0
@@ -352,14 +495,11 @@ def compra_leitao():
             )
             quantidade_disponivel += 1
 
-    print(f"\nQuantidade disponível: {quantidade_disponivel}")
-
     if quantidade_disponivel == 0:
         print("Não há leitões disponíveis.")
         return
 
     cliente = input("\nDigite seu nome: ")
-
     quantidade = int(input("Quantos leitões deseja comprar? "))
 
     if quantidade > quantidade_disponivel:
@@ -368,7 +508,6 @@ def compra_leitao():
 
     total = 0
     animais_comprados = []
-
     vendidos = 0
     indice = 0
 
@@ -377,7 +516,6 @@ def compra_leitao():
         if animais[indice]["Status"] == "Venda":
 
             animal = animais.pop(indice)
-
             comprados.append(animal)
             animais_comprados.append(animal)
 
@@ -393,26 +531,206 @@ def compra_leitao():
     opcao = input("Escolha uma opção: ")
 
     agora = datetime.now()
-
     data = agora.strftime("%d/%m/%Y")
     hora = agora.strftime("%H:%M")
 
+    condicao_climatica = clima()
+
     if opcao == "1":
         tipo = "Retirada na fazenda"
+
     else:
-        tipo = "Entrega programada"
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
 
     for animal in animais_comprados:
         relatorio.append({
             "Data": data,
             "Hora": hora,
-            "Ação": "Compra",
+            "Ação": "Compra Leitão",
             "Cliente": cliente,
             "Brinco": animal["Brinco"],
             "Tipo": animal["Tipo"],
             "Preço": animal["Preço"],
             "Status": "Vendido",
             "Entrega": tipo,
+            "Descrição": f"Leitão vendido para {cliente}"
+        })
+
+    mostrar_comprovante(
+        cliente,
+        quantidade,
+        total,
+        tipo,
+        data,
+        hora,
+        animais_comprados,
+        condicao_climatica
+    )
+
+    return
+
+def compra_equino():
+
+    print("\n" + "=" * 50)
+    print("1 - CAVALO")
+    print("2 - MULA")
+    print("3 - JUMENTO")
+    print("0 - SAIR")
+
+    escolha = input("Escolha uma opção: ")
+
+    if escolha == "0":
+        return
+
+    categoria_escolhida = None
+
+    if escolha == "1":
+        tipo_escolhido = "Cavalo"
+
+        print("\n1 - Potro")
+        print("2 - Adulto")
+
+        cat = input("Escolha a categoria: ")
+
+        if cat == "1":
+            categoria_escolhida = "Potro"
+        elif cat == "2":
+            categoria_escolhida = "Adulto"
+        else:
+            print("Categoria inválida.")
+            return
+
+    elif escolha == "2":
+        tipo_escolhido = "Mula"
+
+    elif escolha == "3":
+        tipo_escolhido = "Jumento"
+
+    else:
+        print("Opção inválida.")
+        return
+
+    print("\nANIMAIS DISPONÍVEIS")
+
+    disponiveis = []
+    tabela = []
+
+    for animal in animais:
+
+        if animal["Status"] != "Venda":
+            continue
+
+        if tipo_escolhido.lower() not in animal["Tipo"].lower():
+            continue
+
+        if categoria_escolhida:
+            if categoria_escolhida.lower() not in animal["Tipo"].lower():
+                continue
+
+        disponiveis.append(animal)
+
+        tabela.append([
+            animal["Brinco"],
+            animal["Tipo"],
+            f"R$ {animal['Preço']:.2f}"
+        ])
+
+    quantidade_disponivel = len(disponiveis)
+
+    if quantidade_disponivel == 0:
+        print("Não há animais disponíveis.")
+        return
+
+    print(
+        tabulate(
+            tabela,
+            headers=["Brinco", "Tipo", "Preço"],
+            tablefmt="fancy_grid"
+        )
+    )
+
+    print(f"\nQuantidade disponível: {quantidade_disponivel}")
+
+    cliente = input("\nDigite seu nome: ")
+    quantidade = int(input("Quantos deseja comprar? "))
+
+    if quantidade > quantidade_disponivel:
+        print("Quantidade indisponível.")
+        return
+
+    animais_comprados = []
+    total = 0
+
+    for animal in disponiveis[:quantidade]:
+
+        animais.remove(animal)
+
+        comprados.append(animal)
+        animais_comprados.append(animal)
+
+        total += animal["Preço"]
+
+    print("\n1 - Retirada")
+    print("2 - Entrega")
+
+    opcao = input("Escolha uma opção: ")
+
+    agora = datetime.now()
+
+    data = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
+
+    condicao_climatica = clima()
+
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
+
+    else:
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
+
+    for animal in animais_comprados:
+
+        relatorio.append({
+            "Data": data,
+            "Hora": hora,
+            "Ação": "Compra Equino",
+            "Cliente": cliente,
+            "Brinco": animal["Brinco"],
+            "Tipo": animal["Tipo"],
+            "Preço": animal["Preço"],
+            "Status": "Vendido",
+            "Entrega": tipo,
+            "Condição climática": condicao_climatica,
             "Descrição": f"{animal['Tipo']} vendido para {cliente}"
         })
 
@@ -423,226 +741,95 @@ def compra_leitao():
         tipo,
         data,
         hora,
-        animais_comprados
+        animais_comprados,
+        condicao_climatica
     )
 
-
-def compra_equino():
-
-    while True:
-
-        print("\n" + "=" * 50)
-        print("1 - CAVALO")
-        print("2 - MULA")
-        print("3 - JUMENTO")
-        print("0 - SAIR")
-
-        escolha = input("Escolha uma opção: ")
-
-        if escolha == "0":
-            break
-
-        # ---------------- CAVALO COM CATEGORIA ----------------
-        if escolha == "1":
-            tipo_escolhido = "Cavalo"
-
-            print("\n1 - Potro")
-            print("2 - Adulto")
-
-            cat = input("Escolha a categoria: ")
-
-            if cat == "1":
-                categoria_escolhida = "Potro"
-            elif cat == "2":
-                categoria_escolhida = "Adulto"
-            else:
-                print("Categoria inválida.")
-                continue
-
-        # ---------------- OUTROS ----------------
-        elif escolha == "2":
-            tipo_escolhido = "Mula"
-            categoria_escolhida = None
-
-        elif escolha == "3":
-            tipo_escolhido = "Jumento"
-            categoria_escolhida = None
-
-        else:
-            print("Opção inválida.")
-            continue
-
-        print("\nANIMAIS DISPONÍVEIS")
-
-        quantidade_disponivel = 0
-
-        for animal in equinos:
-
-            if animal["Status"] != "Venda":
-                continue
-
-            if animal["Tipo"] != tipo_escolhido:
-                continue
-
-            # se for cavalo, filtra por categoria também
-            if tipo_escolhido == "Cavalo":
-                if animal["Categoria"] != categoria_escolhida:
-                    continue
-
-            print(
-                f"Brinco: {animal['Brinco']} | "
-                f"Tipo: {animal['Tipo']} | "
-                f"Categoria: {animal['Categoria']} | "
-                f"Preço: R$ {animal['Preço']:.2f}"
-            )
-
-            quantidade_disponivel += 1
-
-        print(f"\nQuantidade disponível: {quantidade_disponivel}")
-
-        if quantidade_disponivel == 0:
-            print("Não há animais disponíveis.")
-            continue
-
-        cliente = input("\nDigite seu nome: ")
-        quantidade = int(input("Quantos deseja comprar? "))
-
-        if quantidade > quantidade_disponivel:
-            print("Quantidade indisponível.")
-            continue
-
-        total = 0
-        vendidos = 0
-        animais_comprados = []
-        indice = 0
-
-        while vendidos < quantidade and indice < len(equinos):
-
-            animal = equinos[indice]
-
-            if animal["Status"] == "Venda" and animal["Tipo"] == tipo_escolhido:
-
-                if tipo_escolhido == "Cavalo":
-                    if animal["Categoria"] != categoria_escolhida:
-                        indice += 1
-                        continue
-
-                animal = equinos.pop(indice)
-                comprados.append(animal)
-                animais_comprados.append(animal)
-
-                total += animal["Preço"]
-                vendidos += 1
-            else:
-                indice += 1
-
-        print("\n1 - Retirada")
-        print("2 - Entrega")
-
-        opcao = input("Escolha uma opção: ")
-
-        agora = datetime.now()
-        data = agora.strftime("%d/%m/%Y")
-        hora = agora.strftime("%H:%M")
-
-        condicao_climatica = clima()
-
-        if "chuva" in condicao_climatica:
-            tipo = "Entrega atrasada por clima ruim"
-        else:
-            tipo = "Entrega programada"
-
-        for animal in animais_comprados:
-            relatorio.append({
-                "Data": data,
-                "Hora": hora,
-                "Ação": "Compra Equino",
-                "Cliente": cliente,
-                "Brinco": animal["Brinco"],
-                "Tipo": animal["Tipo"],
-                "Categoria": animal["Categoria"],
-                "Preço": animal["Preço"],
-                "Status": "Vendido",
-                "Entrega": tipo,
-                "Condição climática": condicao_climatica,
-                "Descrição": f"Equino vendido para {cliente}"
-            })
-
-        print("\nCOMPRA FINALIZADA COM SUCESSO!")
+    print("\nCOMPRA FINALIZADA COM SUCESSO!")
 
 def compra_queijo():
-    queijos = []
-
-    for produto in produtos:
-        if "queijo" in produto["Nome"].lower():
-            queijos.append(produto)
+    queijos = [
+        p for p in produtos
+        if "queijo" in p["Produto"].lower()
+    ]
 
     if not queijos:
         print("Não há queijos disponíveis.")
         return
 
-    print("\nLISTA DE QUEIJOS DISPONÍVEIS\n")
+    print("\nLISTA DE QUEIJOS\n")
 
-    tabela = []
+    for i, q in enumerate(queijos):
+        print(f"{i+1} - {q['Produto']} | Estoque: {q['Quantidade']} | R$ {q['Preço']:.2f}")
 
-    for i, queijo in enumerate(queijos, start=1):
-        tabela.append([
-            i,
-            queijo["Nome"],
-            queijo["Quantidade"],
-            f"R$ {queijo['Preço']:.2f}"
-        ])
+    escolha = int(input("Escolha: ")) - 1
 
-    print(
-        tabulate(
-            tabela,
-            headers=["Nº", "Tipo", "Estoque", "Preço"],
-            tablefmt="fancy_grid"
-        )
-    )
-
-    opcao = int(input("\nEscolha o queijo: ")) - 1
-
-    if opcao < 0 or opcao >= len(queijos):
+    if escolha < 0 or escolha >= len(queijos):
         print("Opção inválida.")
         return
 
-    queijo = queijos[opcao]
+    produto = queijos[escolha]
 
-    cliente = input("\nDigite seu nome: ")
+    cliente = input("Cliente: ")
+    quantidade = int(input("Quantidade: "))
 
-    quantidade = int(input("Quantidade desejada: "))
-
-    if quantidade > queijo["Quantidade"]:
-        print("Quantidade indisponível.")
+    if quantidade > produto["Quantidade"]:
+        print("Sem estoque.")
         return
 
-    total = quantidade * queijo["Preço"]
+    produto["Quantidade"] -= quantidade
+    total = quantidade * produto["Preço"]
 
-    queijo["Quantidade"] -= quantidade
 
     agora = datetime.now()
-
     data = agora.strftime("%d/%m/%Y")
     hora = agora.strftime("%H:%M")
+
+
+    condicao_climatica = clima()
+
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
+
+    else:
+
+        clima_ruim = [
+            "chuva",
+            "tempestade",
+            "garoa",
+            "trovoada"
+        ]
+
+        if condicao_climatica == "clima indisponível":
+            tipo = "Entrega programada (sem dados climáticos)"
+
+        elif any(palavra in condicao_climatica.lower() for palavra in clima_ruim):
+            tipo = "Entrega atrasada por clima ruim"
+
+        else:
+            tipo = "Entrega programada"
+
 
     relatorio.append({
         "Data": data,
         "Hora": hora,
         "Ação": "Compra Produto",
         "Cliente": cliente,
-        "Produto": queijo["Nome"],
+        "Produto": produto["Produto"],
         "Quantidade": quantidade,
-        "Valor Unitário": queijo["Preço"],
+        "Valor Unitário": produto["Preço"],
+        "Status": "Vendido",
+        "Entrega": tipo,
+        "Condição climática": condicao_climatica,
         "Total": total,
-        "Descrição": f"{quantidade} unidade(s) de {queijo['Nome']} vendida(s) para {cliente}"
+        "Descrição": f"{quantidade} unidade(s) de {produto['Produto']} vendida(s) para {cliente}"
     })
 
     comprovante = [
         ["Cliente", cliente],
-        ["Produto", queijo["Nome"]],
+        ["Produto", produto["Produto"]],
         ["Quantidade", quantidade],
-        ["Valor Unitário", f"R$ {queijo['Preço']:.2f}"],
+        ["Valor Unitário", f"R$ {produto['Preço']:.2f}"],
         ["Total", f"R$ {total:.2f}"],
         ["Data", data],
         ["Hora", hora]
@@ -657,3 +844,102 @@ def compra_queijo():
             tablefmt="fancy_grid"
         )
     )
+
+
+def compra_leite():
+
+    leites = [p for p in produtos if "leite" in p["Produto"].lower()]
+
+    if not leites:
+        print("Não há leite disponível.")
+        return
+
+    print("\nLISTA DE LEITES DISPONÍVEIS\n")
+
+    tabela = []
+
+    for i, leite in enumerate(leites, start=1):
+        tabela.append([
+            i,
+            leite["Produto"],
+            leite["Quantidade"],
+            f"R$ {leite['Preço']:.2f}"
+        ])
+
+    print(
+        tabulate(
+            tabela,
+            headers=["Nº", "Produto", "Estoque", "Preço"],
+            tablefmt="fancy_grid"
+        )
+    )
+
+    opcao = int(input("\nEscolha o leite: ")) - 1
+
+    if opcao < 0 or opcao >= len(leites):
+        print("Opção inválida.")
+        return
+
+    leite = leites[opcao]
+
+    cliente = input("\nDigite seu nome: ")
+    quantidade = float(input("Quantidade desejada (litros): "))
+
+    if quantidade > leite["Quantidade"]:
+        print("Quantidade indisponível.")
+        return
+
+    total = quantidade * leite["Preço"]
+
+    leite["Quantidade"] -= quantidade
+
+    agora = datetime.now()
+
+    data = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
+
+    condicao_climatica = clima()
+
+    if opcao == "1":
+        tipo = "Retirada na fazenda"
+    else:
+        if "chuva" in condicao_climatica.lower():
+            tipo = "Entrega atrasada por clima ruim"
+        else:
+            tipo = "Entrega programada"
+
+    relatorio.append({
+        "Data": data,
+        "Hora": hora,
+        "condiçao climatica": condicao_climatica,
+        "Ação": "Compra Leite",
+        "Cliente": cliente,
+        "Produto": leite["Produto"],
+        "Quantidade": quantidade,
+        "Valor Unitário": leite["Preço"],
+        "Total": total,
+        "Descrição": f"{quantidade} litro(s) de {leite['Produto']} vendido(s) para {cliente}"
+    })
+
+    comprovante = [
+        ["Cliente", cliente],
+        ["Quantidade", quantidade],
+        ["Valor Total", f"R$ {total:.2f}"],
+        ["Entrega", tipo],
+        ["Condição climática", condicao_climatica],
+        ["Data", data],
+        ["Hora", hora]
+        
+    ]
+    print("\nCOMPROVANTE DE COMPRA\n")
+
+
+    print(
+        tabulate(
+            comprovante,
+            headers=["Informação", "Detalhe"],
+            tablefmt="fancy_grid"
+        )
+    )
+
+    print("\nCOMPRA FINALIZADA COM SUCESSO!")

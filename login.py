@@ -1,8 +1,8 @@
 from cadastrosUsuarios import usuarios
 from menu import menurebanho, menucadas, menugerenciamento
 from cadastroanimal import bovi, capri, ovino, suino, equinno, lista, atualizaranimal, removeranimal,relatoriogeral
-from menucliente import menu_cliente
-from Lojadocliente import comprar_animais
+from menucliente import menu_principal, menu_loja, listar_animais
+from Lojadocliente import listar_animais, menu_loja
 from produtosadm import menuprodutos
 
 
@@ -104,11 +104,12 @@ def loginn():
         while True:
             print(f"\n========== Bem-Vindo {logado['nome']} ==========\n")
 
-            menu_cliente()
+            menu_principal()
             escolha = input('Digite sua opção: ')
 
             if escolha == '1':
-                comprar_animais()
+                listar_animais()
+                menu_loja()
 
             elif escolha == '0':
                 return
