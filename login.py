@@ -9,7 +9,6 @@ from produtosadm import menuprodutos
 
 
 
-
 def rebanho():
 
     while True:

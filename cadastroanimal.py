@@ -1,10 +1,28 @@
 import random
 from tabulate import tabulate
 from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino, menucadas, menutipo
-from listas import animais, relatorio
+from listas import animais, relatorio, produtos, leite, queijos, compras
 from datetime import datetime
 
+
 def relatoriogeral():
+    linha()
+    print('      ','Relatório Geral')
+    linha()
+    print('[1] - Relatório Completo')
+    print('[2] - Escolher Relatório')
+    print('[0] - Sair')
+
+    escolha = input('Informe sua opção: ')
+
+    if escolha == '1':
+        relatoriocompleto()
+
+    elif escolha == '2':
+        escolherrelatorio()
+
+
+def relatoriocompleto():
     if not relatorio:
         print('Nenhuma movimentação registrada.')
         return
@@ -36,7 +54,194 @@ def relatoriogeral():
         tablefmt='fancy_grid'
     ))
 
+def escolherrelatorio():
+    while True:
+        linha()
+        print('       ','Escolher Relatório')
+        linha()
+        print('[1] - Animais')
+        print('[2] - Produtos')
+        print('[3] - Clientes')
+        print('[0] - Sair')
+        escolha = input('Informe sua opção: ')
 
+        if escolha == '1':
+            relatorioanimais()
+
+        elif escolha == '2':
+            relatorioprodutos()
+
+        elif escolha == '3':
+            relatoriocompras()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+
+
+
+def relatorioanimais():
+    if not animais:
+        print('Nenhum animal cadastrado.')
+        return
+
+    infor = []
+
+    for animal in animais:
+        infor.append([
+            animal.get('Brinco', 'N/A'),
+            animal.get('Tipo', 'N/A'),
+            animal.get('Peso', 'N/A'),
+            animal.get('Status', 'N/A'),
+            animal.get('Preço', 'N/A')
+        ])
+
+    print(tabulate(
+        infor,
+        headers=[
+            'Brinco',
+            'Tipo',
+            'Peso (kg)',
+            'Status',
+            'Preço'
+        ],
+        tablefmt='fancy_grid'
+    ))
+
+def relatorioprodutos():
+    while True:
+
+        linha()
+        print('     RELATÓRIO DE PRODUTOS')
+        linha()
+
+        print('[1] - Produção de Leite')
+        print('[2] - Produção de Queijos')
+        print('[0] - Voltar')
+
+        escolha = input('Informe sua opção: ')
+
+        if escolha == '1':
+            relatorioleite()
+
+        elif escolha == '2':
+            relatorioqueijo()
+
+        elif escolha == '0':
+            break
+
+        else:
+            print('Opção inválida!')
+
+
+
+
+
+def relatorioleite():
+    if not leite:
+        print('Nenhuma produção de leite cadastrada.')
+        return
+
+    infor = []
+
+    totallitros = 0
+
+    for item in leite:
+        totallitros += item['Litros']
+
+        infor.append([
+            item['Data Ordenha'],
+            f"{item['Litros']} L",
+            f"R$ {item['Preço Litro']:.2f}"
+        ])
+
+    print(tabulate(
+        infor,
+        headers=[
+            'Data',
+            'Quantidade',
+            'Preço por Litro'
+        ],
+        tablefmt='fancy_grid'
+    ))
+
+
+
+    # def relatorioqueijo():
+
+
+def relatorioqueijo():
+
+    if not queijos:
+        print('Nenhum queijo cadastrado!')
+        return
+
+    infor = []
+
+    for item in queijos:
+
+        infor.append([
+            item.get('Tipo', 'N/A'),
+            f"{item.get('Quantidade', 0)} Kg",
+            f"R$ {item.get('Preço', 0):.2f}",
+            f"R$ {item.get('Valor Total', 0):.2f}"
+        ])
+
+    print('\nRELATÓRIO DE QUEIJOS')
+
+    print(tabulate(
+        infor,
+        headers=[
+            'Tipo de Queijo',
+            'Quantidade',
+            'Preço/Kg',
+            'Valor Total'
+        ],
+        tablefmt='fancy_grid'
+    ))
+
+def relatoriocompras():
+    print('\nRelatório de Compras dos Clientes\n')
+
+    if not compras:
+        print('Nenhuma compra registrada!')
+        return
+
+    infor = []
+    faturamento = 0
+
+    for item in compras:
+
+        faturamento += item['Valor Total']
+
+        infor.append([
+            item['Cliente'],
+            item['Produto'],
+            item['Quantidade'],
+            f"R$ {item['Valor Unitário']:.2f}",
+            f"R$ {item['Valor Total']:.2f}",
+            item['Data'],
+            item['Hora']
+        ])
+
+
+
+    print(tabulate(
+        infor,
+        headers=[
+            'Cliente',
+            'Produto',
+            'Quantidade',
+            'Preço Unit.',
+            'Valor Total',
+            'Data',
+            'Hora'
+        ],
+        tablefmt='fancy_grid'
+    ))
 
 # Cadastros
 
