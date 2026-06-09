@@ -342,6 +342,16 @@ def compra_caprino():
             tipo = "Entrega programada"
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
         relatorio.append({
             "Data": data,
             "Hora": hora,
@@ -466,6 +476,16 @@ def compra_ovino():
             tipo = "Entrega programada"
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
         relatorio.append({
             "Data": data,
             "Hora": hora,
@@ -590,6 +610,16 @@ def compra_suino():
             tipo = "Entrega programada"
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
         relatorio.append({
             "Data": data,
             "Hora": hora,
@@ -714,6 +744,16 @@ def compra_leitao():
             tipo = "Entrega programada"
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
         relatorio.append({
             "Data": data,
             "Hora": hora,
@@ -894,6 +934,16 @@ def compra_equino():
             tipo = "Entrega programada"
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
 
         relatorio.append({
             "Data": data,
