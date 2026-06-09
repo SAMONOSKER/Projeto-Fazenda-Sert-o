@@ -243,7 +243,9 @@ def relatoriocompras():
 
     print('\n========== COMPROVANTES ==========\n')
 
-    for compra in compras:
+    for compra in comprados:
+        if 'Cliente' not in compra:
+            continue
         comprovantecliente(compra)
 
 def comprovantecliente(compra):
