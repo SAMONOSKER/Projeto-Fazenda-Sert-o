@@ -1,8 +1,7 @@
 from cadastroanimal import animais
-from listas import relatorio, comprados
+from listas import relatorio, comprados, produtos
 from datetime import datetime
 from tabulate import tabulate
-from listas import produtos
 import requests
 
 
@@ -208,6 +207,16 @@ def compra_bovino():
     hora = agora.strftime("%H:%M")
 
     for animal in animais_comprados:
+        comprados.append({
+            'Cliente': cliente,
+            'Produto': animal['Tipo'],
+            'Quantidade': quantidade,
+            'Valor Unitário': animal['Preço'],
+            'Valor Total': animal['Preço'],
+            'Data': data,
+            'Hora': hora,
+            'Entrega': tipo
+        })
 
         relatorio.append({
             "Data": data,

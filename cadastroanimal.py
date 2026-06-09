@@ -1,7 +1,7 @@
 import random
 from tabulate import tabulate
 from menu import statusbov, statuscapri, estatusovi, estatussuino, equino, statusequino, menucadas, menutipo
-from listas import animais, relatorio, produtos, leite, queijos, compras
+from listas import animais, relatorio, comprados, leite, queijos, compras
 from datetime import datetime
 
 
@@ -31,10 +31,10 @@ def relatoriocompleto():
         print('Nenhuma movimentação registrada.')
         return
 
-    dados = []
+    infor = []
 
     for item in relatorio:
-        dados.append([
+        infor.append([
             item.get('Data', 'N/A'),
             item.get('Hora', 'N/A'),
             item.get('Ação', 'N/A'),
@@ -45,7 +45,7 @@ def relatoriocompleto():
         ])
 
     print(tabulate(
-        dados,
+        infor,
         headers=[
             'Data',
             'Hora',
@@ -83,9 +83,6 @@ def escolherrelatorio():
 
         else:
             print('Opção inválida!')
-
-
-
 
 def relatorioanimais():
     if not animais:
@@ -140,10 +137,6 @@ def relatorioprodutos():
         else:
             print('Opção inválida!')
 
-
-
-
-
 def relatorioleite():
     if not leite:
         print('Nenhuma produção de leite cadastrada.')
@@ -175,7 +168,6 @@ def relatorioleite():
 
 
     # def relatorioqueijo():
-
 
 def relatorioqueijo():
 
@@ -210,28 +202,28 @@ def relatorioqueijo():
 def relatoriocompras():
     print('\nRelatório de Compras dos Clientes\n')
 
-    if not compras:
+    if not comprados:
         print('Nenhuma compra registrada!')
         return
 
     infor = []
-    faturamento = 0
+    faturamento_total = 0
 
-    for item in compras:
+    for item in comprados:
+        if 'Cliente' not in item:
+            continue
 
-        faturamento += item['Valor Total']
+        faturamento_total += item.get('Valor Total', 0)
 
         infor.append([
-            item['Cliente'],
-            item['Produto'],
-            item['Quantidade'],
-            f"R$ {item['Valor Unitário']:.2f}",
-            f"R$ {item['Valor Total']:.2f}",
-            item['Data'],
-            item['Hora']
+            item.get('Cliente', 'N/A'),
+            item.get('Produto', 'N/A'),
+            item.get('Quantidade', 0),
+            f"R$ {item.get('Valor Unitário', 0):.2f}",
+            f"R$ {item.get('Valor Total', 0):.2f}",
+            item.get('Data', 'N/A'),
+            item.get('Hora', 'N/A')
         ])
-
-
 
     print(tabulate(
         infor,
@@ -246,6 +238,44 @@ def relatoriocompras():
         ],
         tablefmt='fancy_grid'
     ))
+
+    print(f'\nFATURAMENTO TOTAL: R$ {faturamento_total:.2f}')
+
+    print('\n========== COMPROVANTES ==========\n')
+
+    for compra in compras:
+        comprovantecliente(compra)
+
+def comprovantecliente(compra):
+    infor = [[
+        compra.get('Cliente', 'N/A'),
+        compra.get('Produto', 'N/A'),
+        compra.get('Quantidade', 0),
+        f"R$ {compra.get('Valor Unitário', 0):.2f}",
+        f"R$ {compra.get('Valor Total', 0):.2f}",
+        compra.get('Data', 'N/A'),
+        compra.get('Hora', 'N/A'),
+        compra.get('Entrega', 'N/A')
+    ]]
+
+    print('\nCOMPROVANTE DE COMPRA')
+
+    print(tabulate(
+        infor,
+        headers=[
+            'Cliente',
+            'Produto',
+            'Quantidade',
+            'Preço Unit.',
+            'Valor Total',
+            'Data',
+            'Hora',
+            'Entrega'
+        ],
+        tablefmt='fancy_grid'
+    ))
+
+
 
 # Cadastros
 
